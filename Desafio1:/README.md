@@ -1,13 +1,18 @@
-# Herramientas de AWS con Boto3
+# S3 Backup Automático
 
-Suite completa de scripts para automatizar tareas en AWS.
+Script Python para hacer backup automático de carpetas locales a Amazon S3. Scanea carpetas, sube archivos y crea carpetas con fecha/timestamp.
 
-## 📋 Desafíos completados
+## 📋 Características
 
-| Desafío | Descripción | Archivos |
-|---------|------------|----------|
-| **[Desafío 1](DESAFIO_1.md)** | Backup automático de carpetas a S3 | s3_backup.py, backup_scheduler.py |
-| **[Desafío 2](DESAFIO_2.md)** | Monitor de instancias EC2 | ec2_monitor.py, ec2_controller.py |
+- ✅ Escanea carpetas recursivamente
+- ✅ Sube todos los archivos a S3
+- ✅ Crea carpetas con timestamp automático
+- ✅ Mantiene estructura de directorios
+- ✅ Excluye patrones de archivos
+- ✅ Logging detallado
+- ✅ Soporte para múltiples perfiles de AWS
+- ✅ Programación de backups automáticos
+- ✅ API Python para integración
 
 ## 🚀 Instalación rápida
 
@@ -256,64 +261,4 @@ Libre para usar y modificar.
 
 ---
 
-## 🖥️ EC2 Monitor y Control (Desafío 2)
-
-Scripts para listar, monitorear y controlar instancias EC2.
-
-### 📋 Características EC2
-
-- ✅ Listar instancias con: ID, Estado, Tipo, IP pública/privada
-- ✅ Filtrar por estado (running, stopped, terminated, etc.)
-- ✅ Mostrar en múltiples formatos (tabla, JSON, CSV)
-- ✅ Monitoreo continuo en tiempo real
-- ✅ Iniciar, detener, reiniciar instancias
-- ✅ Ver estado y esperar cambios
-- ✅ Estadísticas de instancias
-
-### 🚀 Uso rápido EC2
-
-#### Listar instancias
-```bash
-python ec2_monitor.py
-```
-
-#### Monitoreo en tiempo real
-```bash
-python ec2_monitor.py --monitor
-```
-
-#### Exportar a CSV
-```bash
-python ec2_monitor.py --format csv > instancias.csv
-```
-
-#### Iniciar instancia
-```bash
-python ec2_controller.py start i-1234567890abcdef0
-```
-
-#### Detener instancia
-```bash
-python ec2_controller.py stop i-1234567890abcdef0
-```
-
-#### Ver estado
-```bash
-python ec2_controller.py status i-1234567890abcdef0
-```
-
-### 📁 Archivos EC2
-
-| Archivo | Descripción |
-|---------|------------|
-| `ec2_monitor.py` | Listar y monitorear instancias EC2 |
-| `ec2_controller.py` | Controlar instancias (start, stop, reboot) |
-| `ec2_examples.py` | Ejemplos interactivos (10 ejemplos) |
-| `test_ec2.py` | Pruebas sin AWS real |
-| `EC2_MONITOR.md` | Documentación completa |
-
-Para más detalles, ver [DESAFIO_2.md](DESAFIO_2.md) y [EC2_MONITOR.md](EC2_MONITOR.md)
-
----
-
-**Documento actualizado**: 18 de Marzo de 2026
+**Documento actualizado**: 17 de Marzo de 2026
