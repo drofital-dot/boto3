@@ -129,24 +129,27 @@ class EC2Monitor:
     
     def _display_table(self, instances: List[Dict]):
         """Mostrar en formato tabla."""
-        print("\n" + "="*120)
+        print("\n" + "="*140)
         print("INSTANCIAS EC2")
-        print("="*120)
+        print("="*140)
         
         # Encabezados
-        print(f"{'ID':<19} | {'Estado':<10} | {'Tipo':<12} | {'IP Pública':<16} | {'IP Privada':<16} | {'Nombre':<30}")
-        print("-"*120)
+        print(f"{'ID':<19} | {'Estado':<10} | {'Tipo':<12} | {'IP Pública':<18} | {'IP Privada':<16} | {'VPC':<12} | {'Nombre':<25}")
+        print("-"*140)
         
         # Filas
         for instance in instances:
             name = self._get_instance_name(instance)
             state_color = self._get_state_color(instance['State'])
             
+            # Mostrar IP pública con indicador si no está asignada
+            public_ip = instance['PublicIpAddress'] if instance['PublicIpAddress'] != 'N/A' else '(Sin asignar)'
+            
             print(f"{instance['InstanceId']:<19} | {state_color}{instance['State']:<10}\033[0m | "
-                  f"{instance['InstanceType']:<12} | {instance['PublicIpAddress']:<16} | "
-                  f"{instance['PrivateIpAddress']:<16} | {name:<30}")
+                  f"{instance['InstanceType']:<12} | {public_ip:<18} | "
+                  f"{instance['PrivateIpAddress']:<16} | {instance['VpcId']:<12} | {name:<25}")
         
-        print("="*120)
+        print("="*140)
     
     def _display_json(self, instances: List[Dict]):
         """Mostrar en formato JSON."""
@@ -241,6 +244,72 @@ class EC2Monitor:
                 print(f"  {itype}: {count}")
         
         print("="*50 + "\n")
+    
+    def show_instance_details(self, instance_id: str):
+        """
+        Mostrar detalles completos de una instancia.
+        
+        Args:
+            instance_id: ID de la instancia
+        """
+        try:
+            response = self.ec2_client.describe_instances(InstanceIds=[instance_id])
+            
+            if not response['Reservations']:
+                logger.error(f"Instancia no encontrada: {instance_id}")
+                return
+            
+            instance = response['Reservations'][0]['Instances'][0]
+            
+            print("\n" + "="*60)
+            print(f"DETALLES DE {instance_id}")
+            print("="*60)
+            
+            # Información básica
+            print(f"\n📋 Información Básica:")
+            print(f"  Nombre: {self._get_instance_name(instance)}")
+            print(f"  Estado: {instance.get('State', {}).get('Name', 'N/A')}")
+            print(f"  Tipo: {instance.get('InstanceType', 'N/A')}")
+            print(f"  Criada: {instance.get('LaunchTime', 'N/A')}")
+            
+            # Información de red
+            print(f"\n🌐 Información de Red:")
+            print(f"  VPC ID: {instance.get('VpcId', 'N/A')}")
+            print(f"  Subnet ID: {instance.get('SubnetId', 'N/A')}")
+            print(f"  IP Privada: {instance.get('PrivateIpAddress', 'N/A')}")
+            print(f"  IP Pública: {instance.get('PublicIpAddress', '(Sin asignar)')}")
+            
+            # Información de seguridad
+            print(f"\n🔐 Security Groups:")
+            for sg in instance.get('SecurityGroups', []):
+                print(f"  - {sg['GroupName']} ({sg['GroupId']})")
+            
+            # Network Interfaces
+            print(f"\n📡 Network Interfaces:")
+            for eni in instance.get('NetworkInterfaces', []):
+                print(f"  - {eni['NetworkInterfaceId']}")
+                print(f"    IP Privada: {eni['PrivateIpAddress']}")
+                if eni.get('Association'):
+                    print(f"    IP Pública: {eni['Association'].get('PublicIp', '(Sin asignar)')}")
+                print(f"    Estado: {eni.get('Status', 'N/A')}")
+            
+            # Tags
+            print(f"\n🏷️  Tags:")
+            if instance.get('Tags'):
+                for tag in instance['Tags']:
+                    print(f"  {tag['Key']}: {tag['Value']}")
+            else:
+                print("  (Sin tags)")
+            
+            # Storage
+            print(f"\n💾 Volúmenes:")
+            for device in instance.get('BlockDeviceMappings', []):
+                print(f"  - {device['DeviceName']}: {device['Ebs']['VolumeId']}")
+            
+            print("="*60 + "\n")
+        
+        except Exception as e:
+            logger.error(f"Error al obtener detalles: {e}")
     
     def monitor_continuous(self, interval: int = 30, filters: Dict = None):
         """
