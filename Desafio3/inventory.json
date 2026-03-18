@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "account_id": "834137742316",
+    "region": "us-west-2",
+    "scan_timestamp": "2026-03-18T23:28:33.844497",
+    "scanner_version": "1.0.0"
+  },
+  "resources": {
+    "ec2": [],
+    "s3": [],
+    "rds": [],
+    "lambda": [
+      {
+        "FunctionName": "MonitoringFunction",
+        "Runtime": "python3.10",
+        "MemorySize": 128,
+        "Timeout": 300,
+        "LastModified": "2026-03-18T22:40:05.245+0000",
+        "Version": "$LATEST",
+        "State": "N/A",
+        "Architectures": [
+          "x86_64"
+        ]
+      }
+    ],
+    "vpc": {
+      "vpcs": [
+        {
+          "VpcId": "vpc-0931743febb24b9f5",
+          "State": "available",
+          "CidrBlock": "172.31.0.0/16",
+          "IsDefault": true,
+          "Tags": []
+        }
+      ],
+      "subnets": [
+        {
+          "SubnetId": "subnet-0f84ff42bac82deab",
+          "VpcId": "vpc-0931743febb24b9f5",
+          "CidrBlock": "172.31.48.0/20",
+          "AvailabilityZone": "us-west-2d",
+          "State": "available",
+          "Tags": []
+        },
+        {
+          "SubnetId": "subnet-014868487d8a57469",
+          "VpcId": "vpc-0931743febb24b9f5",
+          "CidrBlock": "172.31.16.0/20",
+          "AvailabilityZone": "us-west-2a",
+          "State": "available",
+          "Tags": []
+        },
+        {
+          "SubnetId": "subnet-012aea14d4d0e35f1",
+          "VpcId": "vpc-0931743febb24b9f5",
+          "CidrBlock": "172.31.0.0/20",
+          "AvailabilityZone": "us-west-2c",
+          "State": "available",
+          "Tags": []
+        },
+        {
+          "SubnetId": "subnet-055d69f114d39c6b3",
+          "VpcId": "vpc-0931743febb24b9f5",
+          "CidrBlock": "172.31.32.0/20",
+          "AvailabilityZone": "us-west-2b",
+          "State": "available",
+          "Tags": []
+        }
+      ],
+      "security_groups": [
+        {
+          "GroupId": "sg-06d40a845efcdba8d",
+          "GroupName": "default",
+          "VpcId": "vpc-0931743febb24b9f5",
+          "Description": "default VPC security group",
+          "IpPermissions": [
+            {
+              "IpProtocol": "-1",
+              "UserIdGroupPairs": [
+                {
+                  "UserId": "834137742316",
+                  "GroupId": "sg-06d40a845efcdba8d"
+                }
+              ],
+              "IpRanges": [],
+              "Ipv6Ranges": [],
+              "PrefixListIds": []
+            }
+          ],
+          "IpPermissionsEgress": [
+            {
+              "IpProtocol": "-1",
+              "UserIdGroupPairs": [],
+              "IpRanges": [
+                {
+                  "CidrIp": "0.0.0.0/0"
+                }
+              ],
+              "Ipv6Ranges": [],
+              "PrefixListIds": []
+            }
+          ],
+          "Tags": []
+        }
+      ]
+    },
+    "ebs": []
+  },
+  "summary": {
+    "total_resources": 7,
+    "services_scanned": 6,
+    "service_counts": {
+      "ec2": 0,
+      "s3": 0,
+      "rds": 0,
+      "lambda": 1,
+      "vpc": 6,
+      "ebs": 0
+    }
+  }
+}
