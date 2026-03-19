@@ -1,0 +1,5 @@
+aws ec2 create-key-pair --key-name mi-nueva-key --query 'KeyMaterial' --output text > mi-nueva-key.pem
+aws cloudformation delete-stack --stack-name webapp-stack
+aws cloudformation create-stack   --stack-name webapp-stack   --template-body file://webapp-network.yaml   --parameters       ParameterKey=ProjectName,ParameterValue=webapp       ParameterKey=KeyName,ParameterValue=mi-nueva-key       ParameterKey=InstanceType,ParameterValue=t3.micro
+aws cloudformation describe-stacks   --stack-name webapp-stack   --query "Stacks[0].StackStatus"
+aws cloudformation describe-stack-events   --stack-name webapp-stack   --max-items 20   --query 'StackEvents[?ResourceStatusReason!=`null`].[Timestamp,LogicalResourceId,ResourceType,ResourceStatus,ResourceStatusReason]'   --output table
